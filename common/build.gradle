@@ -1,0 +1,30 @@
+plugins {
+    id 'org.apsarasmc.apsaras.annotation' version '1.1'
+}
+repositories {
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        name = 'sponge-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+}
+dependencies {
+    compileOnly 'org.mozilla:rhino:1.7.13'
+
+    compileOnly 'me.clip:placeholderapi:2.10.9'
+
+    compileOnly 'org.apsarasmc.apsaras:apsaras:1.2-SNAPSHOT'
+    compileOnly 'org.apsarasmc.apsaras:core:1.2-SNAPSHOT'
+    compileOnly 'org.apsarasmc.apsaras:spigot:1.2-SNAPSHOT'
+    compileOnly 'org.apsarasmc.apsaras:sponge:1.2-SNAPSHOT'
+    compileOnly 'org.apsarasmc.apsaras:sponge-legacy:1.2-SNAPSHOT'
+
+    compileOnly 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
+    compileOnly 'org.spongepowered:spongeapi:7.3.0'
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+}
