@@ -1,7 +1,5 @@
 package com.eloli.mychat.event;
 
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.apsarasmc.apsaras.event.Event;
 import org.apsarasmc.apsaras.event.EventContext;
 

@@ -2,8 +2,10 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven { url 'https://apsarasmc-maven.pkg.coding.net/repository/apsarasmc/apsaras/' }
+        mavenLocal()
+        // maven { url 'https://apsarasmc-maven.pkg.coding.net/repository/apsarasmc/apsaras/' }
     }
 }
 rootProject.name = 'MyChat'
 include 'common'
+

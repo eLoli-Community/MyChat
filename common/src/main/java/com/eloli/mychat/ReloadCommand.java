@@ -15,10 +15,13 @@ import javax.inject.Inject;
 @AutoComponent
 public class ReloadCommand {
     private final String RELOAD_PERMISSION = "mychat.reload";
+
     @Inject
     private PluginContainer plugin;
+
     @Inject
     private EventManager eventManager;
+
     @EventHandler
     public void registerCommand(LoadPluginEvent.RegisterCommand event) {
         event.register(plugin, "mychat",
@@ -30,9 +33,9 @@ public class ReloadCommand {
                                             context.sendMessage(Component.text("Reloading, wait please."));
                                             eventManager.post(new ReloadEvent(result -> {
                                                 if (result == ReloadEvent.Result.SUCCESS) {
-                                                    context.sendMessage(Component.text("Reloading succeed."));
+                                                    context.sendMessage(Component.text("Reload succeed."));
                                                 }else {
-                                                    context.sendMessage(Component.text("Reloading failed.", NamedTextColor.RED));
+                                                    context.sendMessage(Component.text("Reload failed.", NamedTextColor.RED));
                                                 }
                                             }));
                                             return CommandResult.success();

@@ -1,16 +1,19 @@
 package com.eloli.mychat;
 
+import com.eloli.mychat.event.OpenMenuEvent;
 import com.eloli.mychat.event.ReloadEvent;
+import com.eloli.mychat.menu.OpenMenuHandler;
+import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.apsarasmc.apsaras.Apsaras;
 import org.apsarasmc.apsaras.aop.AutoComponent;
 import org.apsarasmc.apsaras.event.EventHandler;
+import org.apsarasmc.apsaras.event.EventManager;
 import org.apsarasmc.apsaras.event.Order;
 import org.apsarasmc.apsaras.event.lifecycle.ServerLifeEvent;
 import org.apsarasmc.apsaras.event.message.ChatEvent;
 import org.apsarasmc.apsaras.plugin.PluginContainer;
-import org.apsarasmc.spigot.util.TextComponentUtil;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Script;
@@ -19,6 +22,7 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.text.Style;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -28,14 +32,15 @@ import java.util.Objects;
 
 @AutoComponent
 @Singleton
-public class MyChatCore {
+public class MyChatCore implements IChatCore{
     @Inject
     private PluginContainer pluginContainer;
-
     @Inject
     private Logger logger;
+    @Inject
+    private EventManager eventManager;
 
-    private Context cx;
+    private Context cx = null;
     private Scriptable scope;
 
     private Map<String, Script> compiledScripts;
@@ -43,6 +48,10 @@ public class MyChatCore {
     @EventHandler
     public void onLoad(final ServerLifeEvent.Enable e) throws InterruptedException {
         load();
+        eventManager.registerListeners(
+                pluginContainer,
+                Apsaras.injector().getInstance(OpenMenuHandler.class)
+        );
     }
 
     public Context context(){
@@ -55,6 +64,9 @@ public class MyChatCore {
 
     private ReloadEvent.Result load(){
         compiledScripts = new HashMap<>();
+        if(cx != null){
+            Context.exit();
+        }
         cx = Context.enter();
         scope = cx.initStandardObjects();
         try(InputStream inputStream = MyChatCore.class.getClassLoader().getResourceAsStream("mychat/init.js")) {
@@ -98,6 +110,11 @@ public class MyChatCore {
     @EventHandler
     public void onChatEvent(final ChatEvent event) {
         if(event.cancelled()){
+            return;
+        }
+        if(event.originalMessage().equals(".")){
+            eventManager.post(new OpenMenuEvent(event.sender()));
+            event.cancel();
             return;
         }
         try {

@@ -19,6 +19,6 @@ import org.apsarasmc.apsaras.plugin.PluginDepend;
 public class MyChatModule implements Module {
     @Override
     public void configure(Binder binder) {
-        //
+        binder.bind(IChatCore.class).to(MyChatCore.class);
     }
 }

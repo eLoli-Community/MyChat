@@ -9,7 +9,8 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven { url 'https://apsarasmc-maven.pkg.coding.net/repository/apsarasmc/apsaras/' }
+        //maven { url 'https://apsarasmc-maven.pkg.coding.net/repository/apsarasmc/apsaras/' }
+        mavenLocal()
     }
     dependencies {
         compileOnly 'org.apsarasmc.apsaras:apsaras:1.2-SNAPSHOT'
